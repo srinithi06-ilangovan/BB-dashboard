@@ -1,0 +1,63 @@
+/* General styles for your app */
+
+/* Styles for Markdown content */
+.markdown-content {
+    /* background-color: whitesmoke; */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.markdown-content h1 {
+    color: #333;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 0.3em;
+}
+
+.markdown-content p {
+    line-height: 1.6;
+    margin-bottom: 10px;
+    /* flex-wrap: wrap; */
+    display: flex;
+    align:justify;
+
+}
+
+.markdown-content p strong {
+
+    color: #0073e6;
+}
+
+.markdown-content ul {
+    list-style-type: disc;
+    margin: 0px;
+    align:justify;
+}
+
+.markdown-content ul li{
+     display: flex;
+     align:justify;
+     /* border-bottom: 1px solid lightgray; */
+}
+
+.markdown-content ul ol{
+     display: flex;
+     align:justify;
+     /* border-bottom: 1px solid lightgray; */
+}
+
+.markdown-content pre {
+    background-color: #f4f4f4;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    overflow-x: auto;
+}
+
+.markdown-content code {
+    font-family: monospace;
+    align:justify;
+    background-color: #f0f0f0;
+    padding: 2px 4px;
+    border-radius: 3px;
+}

@@ -1,0 +1,38 @@
+.btn {
+    background-color: #3498db;
+    padding: 10px 20px;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+
+.info-container {
+    padding: 20px;
+    display: flex;
+    gap: 30px;
+}
+
+.pod-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.date-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+input,
+textarea {
+    border: 1px solid #e0e0e0;
+    background-color: #ffffff;
+    color: #333333;
+}

@@ -1,0 +1,36 @@
+export const jql = {
+    moneymatrix: `Project in (SCPA, PAYSYS, TMSPON) AND Type NOT in ("EPIC")
+AND ((assignee in (e.subbiah, Anushree.Chandrasek, Soujanya.Shetty, sumitha.kumari, sravanthi.vettigunta, praveer.nair, srinithi.ilangovan, vivekprabhakaran.j, g.chinniraviteja)) 
+OR ( (issueFunction in commented("by e.subbiah") OR issuekey in updatedBy(e.subbiah) )
+OR ( issueFunction in commented("by Anushree.Chandrasek") OR issuekey in updatedBy( Anushree.Chandrasek) )
+OR ( issueFunction in commented("by Soujanya.Shetty") OR issuekey in updatedBy(Soujanya.Shetty) )
+OR ( issueFunction in commented("by sumitha.kumari") OR issuekey in updatedBy(sumitha.kumari) )
+OR ( issueFunction in commented("by sravanthi.vettigunta") OR issuekey in updatedBy(sravanthi.vettigunta) )
+OR ( issueFunction in commented("by g.chinniraviteja") OR issuekey in updatedBy(g.chinniraviteja) )
+OR ( issueFunction in commented("by praveer.nair") OR issuekey in updatedBy(praveer.nair) )
+OR ( issueFunction in commented("by srinithi.ilangovan") OR issuekey in updatedBy(srinithi.ilangovan) )
+OR ( issueFunction in commented("by vivekprabhakaran.j") OR issuekey in updatedBy(vivekprabhakaran.j) ) )) `,
+    
+	powerplay: `Project in (SCPA, PAYSYS, TMSPON) AND Type NOT in ("EPIC")
+AND ((assignee in (v.avva, shweta.padhy, harsha.kanthi, kishore.johnsan, Manisha.Kundena, karthick.p2, jaiprakash.madhavan)) 
+OR ( (issueFunction in commented("by v.avva") OR issuekey in updatedBy(v.avva) )
+OR ( issueFunction in commented("by shweta.padhy") OR issuekey in updatedBy(shweta.padhy) )
+OR ( issueFunction in commented("by harsha.kanthi") OR issuekey in updatedBy(harsha.kanthi) )
+OR ( issueFunction in commented("by kishore.johnsan") OR issuekey in updatedBy(kishore.johnsan) )
+OR ( issueFunction in commented("by Manisha.Kundena") OR issuekey in updatedBy(Manisha.Kundena) )
+OR ( issueFunction in commented("by jaiprakash.madhavan") OR issuekey in updatedBy(jaiprakash.madhavan) )
+OR ( issueFunction in commented("by karthick.p2") OR issuekey in updatedBy(karthick.p2) ) )) `,
+
+    orion: `Project in (SCPA, PAYSYS, TMSPON) AND Type NOT in ("EPIC")
+AND ((assignee in (saranraj.balu, sathish.kumarmohan, shilpa.kanojiya, namrata.chakraborty, chirag.chhabria, swetha.busam, karthik.gunti)) 
+OR ( (issueFunction in commented("by saranraj.balu") OR issuekey in updatedBy(saranraj.balu) )
+OR ( issueFunction in commented("by sathish.kumarmohan") OR issuekey in updatedBy( sathish.kumarmohan) )
+OR ( issueFunction in commented("by shilpa.kanojiya") OR issuekey in updatedBy(shilpa.kanojiya) )
+OR ( issueFunction in commented("by namrata.chakraborty") OR issuekey in updatedBy(namrata.chakraborty) )
+OR ( issueFunction in commented("by chirag.chhabria") OR issuekey in updatedBy(chirag.chhabria) )
+OR ( issueFunction in commented("by swetha.busam") OR issuekey in updatedBy(swetha.busam) )
+OR ( issueFunction in commented("by karthik.gunti") OR issuekey in updatedBy(karthik.gunti) ) )) `,
+	digitalpenny: ` `,
+    payments: ``
+}
+

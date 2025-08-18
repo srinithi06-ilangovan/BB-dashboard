@@ -1,0 +1,46 @@
+export const jql = {
+    moneymatrix: `Project in (SCPA, PAYSYS, TMSPON) AND Type NOT in ("EPIC")
+AND ((assignee in (e.subbiah, Anushree.Chandrasek, Soujanya.Shetty, sumitha.kumari, Sai.Suluru, praveer.nair, srinithi.ilangovan, vivekprabhakaran.j)) 
+OR ( (issueFunction in commented("by e.subbiah") OR issuekey in updatedBy(e.subbiah) )
+OR ( issueFunction in commented("by Anushree.Chandrasek") OR issuekey in updatedBy( Anushree.Chandrasek) )
+OR ( issueFunction in commented("by Soujanya.Shetty") OR issuekey in updatedBy(Soujanya.Shetty) )
+OR ( issueFunction in commented("by sumitha.kumari") OR issuekey in updatedBy(sumitha.kumari) )
+OR ( issueFunction in commented("by Sai.Suluru") OR issuekey in updatedBy(Sai.Suluru) )
+OR ( issueFunction in commented("by praveer.nair") OR issuekey in updatedBy(praveer.nair) )
+OR ( issueFunction in commented("by srinithi.ilangovan") OR issuekey in updatedBy(srinithi.ilangovan) )
+OR ( issueFunction in commented("by vivekprabhakaran.j") OR issuekey in updatedBy(vivekprabhakaran.j) ) )) ` ,
+    powerplay: `Project in (SCPA, PAYSYS, TMSPON) AND Type NOT in ("EPIC")
+AND ((assignee in (susha.raghunath, shweta.padhy, harsha.kanthi, kishore.johnsan, Manisha.Kundena, karthick.p2, jaiprakash.madhavan)) 
+OR ( (issueFunction in commented("by susha.raghunath") OR issuekey in updatedBy(susha.raghunath) )
+OR ( issueFunction in commented("by shweta.padhy") OR issuekey in updatedBy(shweta.padhy) )
+OR ( issueFunction in commented("by harsha.kanthi") OR issuekey in updatedBy(harsha.kanthi) )
+OR ( issueFunction in commented("by kishore.johnsan") OR issuekey in updatedBy(kishore.johnsan) )
+OR ( issueFunction in commented("by Manisha.Kundena") OR issuekey in updatedBy(Manisha.Kundena) )
+OR ( issueFunction in commented("by jaiprakash.madhavan") OR issuekey in updatedBy(jaiprakash.madhavan) )
+OR ( issueFunction in commented("by karthick.p2") OR issuekey in updatedBy(karthick.p2) ) )) `,
+    digitalpenny: `Project in (SCPA, PAYSYS, TMSPON) AND Type NOT in ("EPIC")
+AND ((assignee in (v.avva, deepa.lingeswari, priya.tripathi, tanmy.rastogi, m.muramshetty, Mugilan.ka,  rahul.tomar, Rocky.Sinha)) 
+OR ( (issueFunction in commented("by v.avva") OR issuekey in updatedBy(v.avva) )
+OR ( issueFunction in commented("by deepa.lingeswari") OR issuekey in updatedBy(deepa.lingeswari) )
+OR ( issueFunction in commented("by priya.tripathi") OR issuekey in updatedBy(priya.tripathi) )
+OR ( issueFunction in commented("by tanmy.rastogi") OR issuekey in updatedBy(tanmy.rastogi) )
+OR ( issueFunction in commented("by m.muramshetty") OR issuekey in updatedBy(m.muramshetty) )
+OR ( issueFunction in commented("by rahul.tomar") OR issuekey in updatedBy(rahul.tomar) )
+OR ( issueFunction in commented("by Rocky.Sinha") OR issuekey in updatedBy(Rocky.Sinha) ) )) `,
+    orion: `Project in (SCPA, PAYSYS, TMSPON) AND Type NOT in ("EPIC")
+AND ((assignee in (saranraj.balu, r.nagaimuthu, kanishka.das, Dhwanit.Kumar, shivam.patwal, swetha.busam, karthik.gunti)) 
+OR ( (issueFunction in commented("by saranraj.balu") OR issuekey in updatedBy(saranraj.balu) )
+OR ( issueFunction in commented("by r.nagaimuthu") OR issuekey in updatedBy( r.nagaimuthu) )
+OR ( issueFunction in commented("by kanishka.das") OR issuekey in updatedBy(kanishka.das) )
+OR ( issueFunction in commented("by Dhwanit.Kumar") OR issuekey in updatedBy(Dhwanit.Kumar) )
+OR ( issueFunction in commented("by shivam.patwal") OR issuekey in updatedBy(shivam.patwal) )
+OR ( issueFunction in commented("by swetha.busam") OR issuekey in updatedBy(swetha.busam) )
+OR ( issueFunction in commented("by karthik.gunti") OR issuekey in updatedBy(karthik.gunti) ) )) `,
+    payments: `Project in (SCPA, PAYSYS, TMSPON) AND Type NOT in ("EPIC")
+AND ((assignee in (saurabh.patil, sravanthi.vettigunta, ayush.arikar, g.chinniraviteja)) 
+OR ( (issueFunction in commented("by saurabh.patil") OR issuekey in updatedBy(saurabh.patil) )
+OR ( issueFunction in commented("by sravanthi.vettigunta") OR issuekey in updatedBy( sravanthi.vettigunta) )
+OR ( issueFunction in commented("by ayush.arikar") OR issuekey in updatedBy(ayush.arikar) )
+OR ( issueFunction in commented("by g.chinniraviteja") OR issuekey in updatedBy(g.chinniraviteja) ) )) `
+
+}

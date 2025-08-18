@@ -1,0 +1,160 @@
+#root {
+  max-width: 1280px;
+  /* width: 100%; */
+  margin: 0 5px;
+  padding: 0 1rem;
+  text-align: center;
+  min-height: 100vh;
+  /* overflow-x: auto; new added */
+  /* overflow-y: hidden; new added */
+  /* box-sizing: border-box; */
+}
+
+body{
+  overflow: hidden;
+  margin: 0;
+}
+
+/* App.jsx */
+h1 {
+  margin-top: 0;
+  margin-bottom: 30px;
+  color: black;
+  /* display: flex; */
+  text-align: center;
+}
+
+/* .container{
+  background-color: white;
+} */
+
+/* ExcelUploader.jsx - input file */
+.inp-file {
+  display: flex;
+  align-items: center;
+  /* justify-content: space-between; new added */
+  /* flex-wrap: nowrap; new added */
+  /* gap: 10px; new added */
+  width: 100%; /* Full width to push button to right */
+  padding-bottom: 10px;
+}
+
+input[type="file"] {
+  color: black; /* This makes "No file chosen" or file name text black */
+}
+
+input[type="file"]::file-selector-button {
+  color: black; /* Change to desired color */
+}
+ 
+.download-btn {
+  margin-left: auto; /* Pushes button to the extreme right */
+  background-color: #007bff; /* Blue color */
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+ 
+.download-btn:disabled {
+  background-color: #cccccc; /* Gray when disabled */
+  cursor: not-allowed;
+}
+
+
+/* TabbedComponent.jsx */
+.tabbed-container {
+  /* max-width: 800px;
+  margin: 0 auto; */
+  width : 100%;
+  /* padding: 0 10px; */
+}
+
+.tab-nav {
+  display: flex;
+  margin-bottom: 0px;
+}
+
+.tab {
+  padding: 10px 20px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  border-radius: 10px 10px 0 0;
+  background-color: #333333;
+  font-weight: normal;
+  color: white;
+}
+
+.tab.active {
+  background-color: #333333;
+  font-weight: bold;
+  border-bottom: none;
+}
+
+.tab-content {
+  position: relative;
+  border: 1px solid black;
+  border-top: 1px solid black;
+  padding: 20px;
+  border-radius: 0 4px 4px 4px;
+  background-color: white;
+  height: 55vh;
+  /* box-sizing: border-box; */
+  overflow-y: auto;
+  /* overflow: hidden; */
+}
+
+.spinner {
+  border: 8px solid rgba(0, 0, 0, 0.1); /* Increase border size */
+  border-left-color: #3498db;
+  width: 60px; /* Increase width */
+  height: 60px; /* Increase height */
+  border-radius: 50%;
+  animation: spin 2s linear infinite;
+  /* Center the spinner */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+ 
+@keyframes spin {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+.warning{
+  color:black;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+/* TicketStatusTable.jsx & SummaryTable.jsx*/
+.ticket-table {
+  /* min-height: 300px;
+  height: auto; */
+  margin: 20px auto;
+  width: 90%;
+  border-collapse: collapse;
+  border: 1px solid black;
+}
+
+h3{
+  color: black;
+}
+
+.ticket-table th,
+.ticket-table td {
+  padding: 10px;
+  text-align: center;
+  color:black;
+}
