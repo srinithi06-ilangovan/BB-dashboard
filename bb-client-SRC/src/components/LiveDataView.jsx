@@ -95,7 +95,7 @@ OR ( issueFunction in commented("by g.chinniraviteja") OR issuekey in updatedBy(
         setStatuses({});
 
         try {
-            const response = await axios.post('http://localhost:3001/api/jira-status', {
+            const response = await axios.post('https://bb-kanban-board.onrender.com/api/jira-status', {
                 jqlQuery,
                 //`${sprintPeriod.sprintEnd}`
 		targetDate:sprEndDate, 

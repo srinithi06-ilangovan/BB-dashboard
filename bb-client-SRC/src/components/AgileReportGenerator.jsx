@@ -45,7 +45,7 @@ const [userPrompt, setUserPrompt] = useState(`Consolidated and Summarise tickets
     const handleSend = async () => {
         setLoading(true)
         try {
-            const res = await fetch("http://localhost:3001/api/ai-report", {
+            const res = await fetch("https://bb-kanban-board.onrender.com/api/ai-report", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ data: excelData, prompt: userPrompt }),

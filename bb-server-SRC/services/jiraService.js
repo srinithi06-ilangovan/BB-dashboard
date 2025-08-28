@@ -85,7 +85,7 @@ async function getIssueStatusAtDate(jiraUrl, personalAccessToken, jqlQuery, targ
             "In Integration": { statusId: 3.5, groupId: 3, group: "In Progress", dodFlag: 0 },
             "In Dev": { statusId: 3.6, groupId: 3, group: "In Progress", dodFlag: 0 },
             "Blocked": { statusId: 4.1, groupId: 4, group: "Blocked", dodFlag: 1 },
-            "In Review": { statusId: 5.1, groupId: 5, group: "Review", dodFlag: 0 },
+            "In Review": { statusId: 5.1, groupId: 5, group: "Review", dodFlag: 1 },
             "Internal Review": { statusId: 5.2, groupId: 5, group: "Review", dodFlag: 0 },
             "Code Review": { statusId: 5.3, groupId: 5, group: "Review", dodFlag: 1 },
             "External Review": { statusId: 5.4, groupId: 5, group: "Review", dodFlag: 1 },

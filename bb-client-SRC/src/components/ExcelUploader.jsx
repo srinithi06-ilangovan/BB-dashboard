@@ -20,7 +20,7 @@ const ExcelUploader = ({ setFileSelected, fileSelected }) => {
 
   const [currentSheetName, setCurrentSheetName] = useState('');
 
- 
+
 
 
   // readerLoad is memoized to prevent unnecessary re-creations.
@@ -47,16 +47,16 @@ const ExcelUploader = ({ setFileSelected, fileSelected }) => {
         );
 
         if (sheetIndex !== actualSheetIndex) {
-            // If sheetIndex was out of bounds, update it to the valid one
-            // This might trigger a re-render and re-run of useEffect, which is desired
-            setSheetIndex(actualSheetIndex);
-            return; // Exit here and let the next useEffect run handle it
+          // If sheetIndex was out of bounds, update it to the valid one
+          // This might trigger a re-render and re-run of useEffect, which is desired
+          setSheetIndex(actualSheetIndex);
+          return; // Exit here and let the next useEffect run handle it
         }
 
         const sheetName = workbook.SheetNames[actualSheetIndex];
-	dispatch(setSheetName(sheetName));
-	setCurrentSheetName(sheetName);
-  	dispatch(setFileData(sheetName));
+        dispatch(setSheetName(sheetName));
+        setCurrentSheetName(sheetName);
+        dispatch(setFileData(sheetName));
 
         if (!sheetName) {
           console.warn(
@@ -75,9 +75,9 @@ const ExcelUploader = ({ setFileSelected, fileSelected }) => {
         console.log(jsonData);
         dispatch(setExcelData(jsonData));
         dispatch(setTicketData(jsonData));
-	
+
         if (sheetName === 'TktStatusCode') {
-	
+
           const totalDoDStory = jsonData
             .filter((info) => info?.["DoD Flag"] === "DoD").reduce((acc, dod) => {
               const dodStatus = dod["Status"]
@@ -103,27 +103,27 @@ const ExcelUploader = ({ setFileSelected, fileSelected }) => {
     const file = event.target.files[0];
     setXlFile(file);
     console.log(file, "file");
-   // dispatch(setFileData(file));
+    // dispatch(setFileData(file));
     setFileSelected(!!file); // Inform parent about file selection
     setSheetIndex(1); // Reset sheet index when a new file is uploaded
     //setSheetIndex(3);
   };
 
   const handlePreviousSheet = () => {
-    if ((parseInt(sheetIndex)-2) > 0){
-    	setSheetIndex((prevIndex) => Math.max(0, prevIndex - 1));
+    if ((parseInt(sheetIndex) - 2) > 0) {
+      setSheetIndex((prevIndex) => Math.max(0, prevIndex - 1));
     }
   };
-const regexSheetName = /^25-[^-]+-W\d{2}-\d{2}$/;
+  const regexSheetName = /^25-[^-]+-W\d{2}-\d{2}$/;
 
   const handleNextSheet = () => {
-	if ((parseInt(numSheets)-2) > parseInt(sheetIndex) ){
-		//if((sheetName. 'TktStatusCode') 
-		//. ^25-[^A-Z]-Kanban+-W\d{2}-\d{2}
-	    	setSheetIndex((prevIndex) => Math.min(numSheets - 1, prevIndex + 1));
-	}else{
-		setSheetIndex(3);
-	}
+    if ((parseInt(numSheets) - 2) > parseInt(sheetIndex)) {
+      //if((sheetName. 'TktStatusCode') 
+      //. ^25-[^A-Z]-Kanban+-W\d{2}-\d{2}
+      setSheetIndex((prevIndex) => Math.min(numSheets - 1, prevIndex + 1));
+    } else {
+      setSheetIndex(3);
+    }
 
   };
 
@@ -131,7 +131,7 @@ const regexSheetName = /^25-[^-]+-W\d{2}-\d{2}$/;
     if (xlFile) {
       readerLoad(); // Call readerLoad directly without parameters
     }
-    
+
   }, [sheetIndex, xlFile, readerLoad]); // Dependencies for useEffect
 
   return (
@@ -144,11 +144,11 @@ const regexSheetName = /^25-[^-]+-W\d{2}-\d{2}$/;
         <>
           <button onClick={handlePreviousSheet} disabled={sheetIndex === 0}>
             {"<<"}
-	
+
           </button>
 
-<p>{currentSheetName}</p>
- 
+          <p>{currentSheetName}</p>
+
           <button onClick={handleNextSheet} disabled={sheetIndex === numSheets - 1}>
             {">>"}
           </button>

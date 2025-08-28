@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://srinithi06-ilangovan.github.io/BB-dashboard/",
+  "homepage": "https://santhanakumarm24.github.io/AgileKanbanBoard/",
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
