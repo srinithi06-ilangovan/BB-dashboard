@@ -20,7 +20,7 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: false, // Set to true if you are using https
+    secure: true, // Set to true if you are using https
     httpOnly: true, // Prevents client-side JavaScript from accessing the cookie
     maxAge: 24 * 60 * 60 * 1000 // Session duration (e.g., 24 hours)
   }
