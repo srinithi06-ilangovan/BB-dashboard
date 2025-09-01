@@ -125,7 +125,7 @@ const checkCollaboratorStatus = async (accessToken, req, res) => {
     req.session.username = username;
 
 
-    res.redirect(`http://localhost:5173/BB-dashboard/?auth=success`);
+    res.redirect(`https://srinithi06-ilangovan.github.io/BB-dashboard/?auth=success`);
   } catch (error) {
     if (error.response && error.response.status === 404) {
       console.error('Error checking collaborator status:', error.response.data);
