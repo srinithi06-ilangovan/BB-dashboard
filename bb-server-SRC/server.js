@@ -1,5 +1,6 @@
 import { GoogleGenAI } from '@google/genai';
 import express from 'express';
+import session from 'express-session';
 import cors from 'cors';
 import axios from 'axios';
 import dotenv from 'dotenv';
@@ -8,12 +9,54 @@ import jiraRoutes from './routes/jiraRoutes.js';
 dotenv.config();
 
 const app = express();
+const corsOptions = {
+  origin: 'https://srinithi06-ilangovan.github.io', // Your React app's URL
+  credentials: true, // This is crucial for sending and receiving cookies
+};
+app.use(cors(corsOptions));
 
-app.use(cors());
+app.use(session({
+  secret: process.env.SESSION_SECRET, // A secret string for signing the session ID cookie
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: false, // Set to true if you are using https
+    httpOnly: true, // Prevents client-side JavaScript from accessing the cookie
+    maxAge: 24 * 60 * 60 * 1000 // Session duration (e.g., 24 hours)
+  }
+}));
 app.use(express.json());
-
 // jira api
 app.use('/api', jiraRoutes);
+
+app.get('/api/auth/status', (req, res) => {
+  if (req.session.isCollaborator) {
+    res.json({
+      isAuthenticated: true,
+      username: req.session.username // Send some user data back
+    });
+  } else {
+    res.status(401).json({ isAuthenticated: false });
+  }
+});
+
+app.post('/api/logout', (req, res) => {
+  // Check if a session exists before trying to destroy it
+  if (req.session) {
+    req.session.destroy(err => {
+      if (err) {
+        console.error('Error destroying session:', err);
+        return res.status(500).send('Could not log out.');
+      }
+      // Success: Send a 200 OK response
+      res.status(200).send('Logged out successfully.');
+      
+    });
+  } else {
+    // No active session to destroy
+    res.status(200).send('No active session.');
+  }
+});
 
 // github login api
 // app.get('/github/login', (req, res) => {
@@ -78,12 +121,16 @@ const checkCollaboratorStatus = async (accessToken, req, res) => {
       },
     });
 
-    res.redirect('https://santhanakumarm24.github.io/AgileKanbanBoard');
+    req.session.isCollaborator = true;
+    req.session.username = username;
+
+
+    res.redirect(`http://localhost:5173/BB-dashboard/?auth=success`);
   } catch (error) {
     if (error.response && error.response.status === 404) {
       console.error('Error checking collaborator status:', error.response.data);
       console.error('Error status:', error.response.status);
-      res.status(403).send('<h1>Access Denied: You are not a collaborator on this repository.</h1>');
+      res.status(403).send('Access Denied: You are not a collaborator on this repository.');
     } else {
       console.error('Error checking collaborator status:', error);
       res.status(500).send('An error occurred.');
