@@ -22,7 +22,8 @@ app.use(session({
   cookie: {
     secure: true, // Set to true if you are using https
     httpOnly: true, // Prevents client-side JavaScript from accessing the cookie
-    maxAge: 24 * 60 * 60 * 1000 // Session duration (e.g., 24 hours)
+    maxAge: 24 * 60 * 60 * 1000, // Session duration (e.g., 24 hours)
+    sameSite: 'None'
   }
 }));
 app.use(express.json());
