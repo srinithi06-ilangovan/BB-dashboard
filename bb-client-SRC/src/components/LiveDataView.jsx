@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useEffect } from 'react';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
-import { jql } from '../utils/jqlHelper';
+import { pod as podResource } from '../utils/jqlHelper';
 import './Styles/livedataview.css'
 
 import { calculateSprintDates, calculateSprintEndDate, calculateStartDateFor14DayPeriod } from '../utils/dataCalculator';
@@ -36,58 +36,73 @@ export const exportToExcel = (jsonData, startDate, targetDate, fileName = 'data'
 
 
 
+function getQuarter(inputDate) {
+    const date = new Date(inputDate); // ensures it's a Date object
+    if (isNaN(date)) {
+        throw new Error("Invalid date");
+    }
+    const month = date.getMonth(); // 0-based: Jan = 0, Dec = 11
+    return `Q${Math.floor(month / 3) + 1}`;
+}
+
+
+
 
 const LiveDataView = () => {
 
-    const initialjql = `
-Project in (SCPA, PAYSYS, TMSPON) AND Type NOT in ("EPIC")
-AND ((assignee in (saurabh.patil, sravanthi.vettigunta, ayush.arikar, g.chinniraviteja)) 
-OR ( (issueFunction in commented("by saurabh.patil") OR issuekey in updatedBy(saurabh.patil) )
-OR ( issueFunction in commented("by sravanthi.vettigunta") OR issuekey in updatedBy( sravanthi.vettigunta) )
-OR ( issueFunction in commented("by ayush.arikar") OR issuekey in updatedBy(ayush.arikar) )
-OR ( issueFunction in commented("by g.chinniraviteja") OR issuekey in updatedBy(g.chinniraviteja) ) )) 
-`
-
     const [targetDate, setTargetDate] = useState('2024-12-31');
-		  useEffect(() => {
-		    const today = new Date();
-		    const yyyy = today.getFullYear();
-		    const mm = String(today.getMonth() + 1).padStart(2, "0");
-		    const dd = String(today.getDate()).padStart(2, "0");
-		    setTargetDate(`${yyyy}-${mm}-${dd}`);
-		  }, []);
-
-	
-	
-    const [query, setQuery] = useState(initialjql);
     const [jqlQuery, setJqlQuery] = useState('');
     const [statuses, setStatuses] = useState({});
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [podName, setPodName] = useState('Money Matrix');
-    
-	const startDate = calculateStartDateFor14DayPeriod(targetDate);
-	const sprintPeriod = calculateSprintDates(targetDate)
-	const sprStartDate = sprintPeriod.sprintStart;
-	const sprEndDate = sprintPeriod.sprintEnd;
+    const [podName, setPodName] = useState('');
 
-	console.log("-------->>>>>>> ", sprEndDate);
-	
+    const startDate = calculateStartDateFor14DayPeriod(targetDate);
+    const sprintPeriod = calculateSprintDates(targetDate)
+    const sprStartDate = sprintPeriod.sprintStart;
+    const sprEndDate = sprintPeriod.sprintEnd;
 
-    useEffect(() => {
-        console.log("-----------Srinithi ----- " + JSON.stringify(calculateSprintDates(targetDate)))
-        const dynamicDateJql = `AND ( ((updatedDate >=${sprintPeriod.sprintStart}) AND updatedDate <=${sprintPeriod.sprintEnd}) OR (issueFunction in commented ( "after ${sprintPeriod.sprintStart} before ${sprintPeriod.sprintEnd}")) ) ORDER BY status ASC`
-        const constructedJql = `${query} ${dynamicDateJql}`;
+    const dynamicDateJql = `AND ( ((updatedDate >=${sprintPeriod.sprintStart}) AND updatedDate <=${sprintPeriod.sprintEnd}) OR (issueFunction in commented ( "after ${sprintPeriod.sprintStart} before ${sprintPeriod.sprintEnd}")) ) ORDER BY status ASC`
 
-        if (!targetDate) {
-            setJqlQuery(initialjql);
-            return;
+
+    const generateJQL = (podKey) => {
+        const getQuarterInfo = getQuarter(targetDate)
+        const getTargetYear = new Date(targetDate).getFullYear()
+
+        const userList = podResource[podKey][`${getQuarterInfo}_${getTargetYear}`];
+        if (userList) {
+            const userListSplit = userList.split(',').map(name => name.trim());
+            let baseJQL = `Project in (SCPA, PAYSYS, TMSPON) AND Type NOT in ("EPIC")\nAND ((assignee in (${userListSplit.join(', ')}))`;
+            userListSplit.forEach(name => {
+                baseJQL += `\nOR (issueFunction in commented("by ${name}") OR issuekey in updatedBy(${name}))`;
+            });
+            baseJQL += `\n)`;
+
+            // setJQL(baseJQL+);
+            setJqlQuery(baseJQL + dynamicDateJql)
+            setPodName(podKey)
+            setError('')
+        }
+        else {
+            setJqlQuery('')
+            setError(`No resources list found for ${podKey} in ${getQuarterInfo} ${getTargetYear}`);
         }
 
-        setJqlQuery(constructedJql);
+    };
 
-    }, [targetDate, query]);
+    useEffect(() => {
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        const mm = String(today.getMonth() + 1).padStart(2, "0");
+        const dd = String(today.getDate()).padStart(2, "0");
+        setTargetDate(`${yyyy}-${mm}-${dd}`);
+    }, []);
 
+    useEffect(() => {
+        generateJQL('moneymatrix')
+
+    }, [targetDate]);
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
@@ -98,14 +113,14 @@ OR ( issueFunction in commented("by g.chinniraviteja") OR issuekey in updatedBy(
             const response = await axios.post('https://agile-kanban-dashboard.onrender.com/api/jira-status', {
                 jqlQuery,
                 //`${sprintPeriod.sprintEnd}`
-		targetDate:sprEndDate, 
-		startDate:sprStartDate
+                targetDate: sprEndDate,
+                startDate: sprStartDate
             });
-            
+
             setStatuses(response.data);
             // console.log(response.data)
-		
-            exportToExcel(response.data, sprStartDate , sprEndDate,podName) 
+
+            exportToExcel(response.data, sprStartDate, sprEndDate, podName)
         } catch (err) {
             console.error('Error fetching Jira statuses:', err);
             setError(err.response?.data?.error || 'An unexpected error occurred.');
@@ -113,6 +128,7 @@ OR ( issueFunction in commented("by g.chinniraviteja") OR issuekey in updatedBy(
             setLoading(false);
         }
     };
+
     return (
         <>
             <div className={"info-container"}>
@@ -140,7 +156,7 @@ OR ( issueFunction in commented("by g.chinniraviteja") OR issuekey in updatedBy(
                             setTargetDate(calculateSprintEndDate(sprintPeriod.sprintEnd, "next"))
                         }}>{'Next Sprint End >>'}</button>
 
-                        <button onClick={handleSubmit} disabled={!targetDate || loading} style={{ backgroundColor: `${targetDate ? '#3498db' : '#e0e0e0'}` }}>
+                        <button onClick={handleSubmit} disabled={!targetDate || !jqlQuery || loading} style={{ backgroundColor: `${jqlQuery ? '#3498db' : '#e0e0e0'}` }}>
                             {loading ? 'Fetching...' : 'Submit'}
                         </button>
                     </div>
@@ -152,14 +168,14 @@ OR ( issueFunction in commented("by g.chinniraviteja") OR issuekey in updatedBy(
                     )}
                 </div>
                 <div className='pod-container'>
-                    <button className='btn' onClick={() => { setQuery(jql['payments']);setPodName('Payments') }}>Payments</button>
-                    <button className='btn' onClick={() => { setQuery(jql['orion']);setPodName('Orion') }}>Orion</button>
-          	    <button className='btn' onClick={() => { setQuery(jql['moneymatrix']);setPodName('Money_Matrix') }}>Money Matrix</button>
-                    <button className='btn' onClick={() => { setQuery(jql['digitalpenny']);setPodName('Digital_Penny') }}>Digital Penny</button>
-           	    <button className='btn' onClick={() => { setQuery(jql['powerplay']);setPodName('Power_Play') }}>Power Play</button>
+                    <button className='btn' onClick={() => { generateJQL('payments') }}>Payments</button>
+                    <button className='btn' onClick={() => { generateJQL('orion') }}>Orion</button>
+                    <button className='btn' onClick={() => generateJQL('moneymatrix')}>Money Matrix</button>
+                    <button className='btn' onClick={() => { generateJQL('digitalpenny') }}>Digital Penny</button>
+                    <button className='btn' onClick={() => { generateJQL('powerplay') }}>Power Play</button>
                 </div>
             </div>
-       
+
 
         </>
     );

@@ -1,39 +1,28 @@
-export const jql = {
-    moneymatrix: `Project in (SCPA, PAYSYS, TMSPON) AND Type NOT in ("EPIC")
-AND ((assignee in (e.subbiah, Anushree.Chandrasek, Soujanya.Shetty, sumitha.kumari, sravanthi.vettigunta, praveer.nair, srinithi.ilangovan, vivekprabhakaran.j, g.chinniraviteja)) 
-OR ( (issueFunction in commented("by e.subbiah") OR issuekey in updatedBy(e.subbiah) )
-OR ( issueFunction in commented("by Anushree.Chandrasek") OR issuekey in updatedBy( Anushree.Chandrasek) )
-OR ( issueFunction in commented("by Soujanya.Shetty") OR issuekey in updatedBy(Soujanya.Shetty) )
-OR ( issueFunction in commented("by sumitha.kumari") OR issuekey in updatedBy(sumitha.kumari) )
-OR ( issueFunction in commented("by sravanthi.vettigunta") OR issuekey in updatedBy(sravanthi.vettigunta) )
-OR ( issueFunction in commented("by g.chinniraviteja") OR issuekey in updatedBy(g.chinniraviteja) )
-OR ( issueFunction in commented("by praveer.nair") OR issuekey in updatedBy(praveer.nair) )
-OR ( issueFunction in commented("by srinithi.ilangovan") OR issuekey in updatedBy(srinithi.ilangovan) )
-OR ( issueFunction in commented("by vivekprabhakaran.j") OR issuekey in updatedBy(vivekprabhakaran.j) ) )) ` ,
-
-    powerplay: `Project in (SCPA, PAYSYS, TMSPON) AND Type NOT in ("EPIC")
-AND ((assignee in (v.avva, shweta.padhy, harsha.kanthi, kishore.johnsan, Manisha.Kundena, karthick.p2, jaiprakash.madhavan)) 
-OR ( (issueFunction in commented("by v.avva") OR issuekey in updatedBy(v.avva) )
-OR ( issueFunction in commented("by shweta.padhy") OR issuekey in updatedBy(shweta.padhy) )
-OR ( issueFunction in commented("by harsha.kanthi") OR issuekey in updatedBy(harsha.kanthi) )
-OR ( issueFunction in commented("by kishore.johnsan") OR issuekey in updatedBy(kishore.johnsan) )
-OR ( issueFunction in commented("by Manisha.Kundena") OR issuekey in updatedBy(Manisha.Kundena) )
-OR ( issueFunction in commented("by jaiprakash.madhavan") OR issuekey in updatedBy(jaiprakash.madhavan) )
-OR ( issueFunction in commented("by karthick.p2") OR issuekey in updatedBy(karthick.p2) ) )) `,
-
-    orion: `Project in (SCPA, PAYSYS, TMSPON) AND Type NOT in ("EPIC")
-AND ((assignee in (saranraj.balu, r.nagaimuthu, kanishka.das, Dhwanit.Kumar, shivam.patwal, swetha.busam, karthik.gunti)) 
-OR ( (issueFunction in commented("by saranraj.balu") OR issuekey in updatedBy(saranraj.balu) )
-OR ( issueFunction in commented("by r.nagaimuthu") OR issuekey in updatedBy( r.nagaimuthu) )
-OR ( issueFunction in commented("by kanishka.das") OR issuekey in updatedBy(kanishka.das) )
-OR ( issueFunction in commented("by Dhwanit.Kumar") OR issuekey in updatedBy(Dhwanit.Kumar) )
-OR ( issueFunction in commented("by shivam.patwal") OR issuekey in updatedBy(shivam.patwal) )
-OR ( issueFunction in commented("by swetha.busam") OR issuekey in updatedBy(swetha.busam) )
-OR ( issueFunction in commented("by karthik.gunti") OR issuekey in updatedBy(karthik.gunti) ) )) `,
-
-    digitalpenny: ` `,
-    payments: ``
-
+export const pod = {
+    payments: {
+        Q1_2025: 'saurabh.patil, sravanthi.vettigunta, ayush.arikar, g.chinniraviteja',
+        Q2_2025: 'saurabh.patil, sravanthi.vettigunta, ayush.arikar, g.chinniraviteja',
+    },
+    moneymatrix: {
+        Q1_2025: 'e.subbiah, Anushree.Chandrasek, Soujanya.Shetty, sumitha.kumari, Sai.Suluru, praveer.nair, srinithi.ilangovan',
+        Q2_2025: 'e.subbiah, Anushree.Chandrasek, Soujanya.Shetty, sumitha.kumari, praveer.nair, srinithi.ilangovan',
+        Q3_2025: 'e.subbiah, Anushree.Chandrasek, Soujanya.Shetty, sumitha.kumari, sravanthi.vettigunta, praveer.nair, srinithi.ilangovan, g.chinniraviteja',
+        Q4_2025: 'e.subbiah, Anushree.Chandrasek, Soujanya.Shetty, sumitha.kumari, sravanthi.vettigunta, praveer.nair, srinithi.ilangovan, g.chinniraviteja',
+    },
+    orion: {
+        Q1_2025: 'saranraj.balu, r.nagaimuthu, kanishka.das, Dhwanit.Kumar, shivam.patwal, swetha.busam, chirag.chhabria, karthik.gunti, vivekprabhakaran.j',
+        Q2_2025: 'saranraj.balu, kanishka.das, Dhwanit.Kumar, shivam.patwal, swetha.busam, chirag.chhabria, karthik.gunti, vivekprabhakaran.j',
+        Q3_2025: 'saranraj.balu, sathish.kumarmohan, namrata.chakraborty, shilpa.kanojiya, chirag.chhabria, swetha.busam, karthik.gunti, vivekprabhakaran.j',
+        Q4_2025: 'saranraj.balu, sathish.kumarmohan, namrata.chakraborty, shilpa.kanojiya, chirag.chhabria, swetha.busam, karthik.gunti, vivekprabhakaran.j',
+    },
+    digitalpenny: {
+        Q1_2025: 'v.avva, deepa.lingeswari, priya.tripathi, tanmy.rastogi, m.muramshetty, Mugilan.ka, rahul.tomar, Rocky.Sinha',
+        Q2_2025: 'v.avva, deepa.lingeswari, priya.tripathi, tanmy.rastogi, m.muramshetty, Mugilan.ka, rahul.tomar, Rocky.Sinha',
+    },
+    powerplay: {
+        Q1_2025: 'susha.raghunath, shweta.padhy, harsha.kanthi, kishore.johnsan, Manisha.Kundena, karthick.p2, jaiprakash.madhavan',
+        Q2_2025: 'susha.raghunath, shweta.padhy, harsha.kanthi, kishore.johnsan, Manisha.Kundena, karthick.p2, jaiprakash.madhavan',
+        Q3_2025: 'v.avva, shweta.padhy, harsha.kanthi, kishore.johnsan, Manisha.Kundena, karthick.p2, jaiprakash.madhavan',
+        Q4_2025: 'v.avva, shweta.padhy, harsha.kanthi, kishore.johnsan, Manisha.Kundena, karthick.p2, jaiprakash.madhavan'
+    }
 }
-
-
