@@ -111,7 +111,7 @@ const LiveDataView = () => {
         setStatuses({});
 
         try {
-            const response = await axios.post('http://localhost:3001/api/jira-status', {
+            const response = await axios.post('https://agile-kanban-dashboard.onrender.com/api/jira-status', {
                 jqlQuery,
                 //`${sprintPeriod.sprintEnd}`
                 targetDate: sprEndDate,
