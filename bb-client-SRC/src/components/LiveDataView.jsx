@@ -55,7 +55,7 @@ const LiveDataView = () => {
     const [statuses, setStatuses] = useState({});
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [podName, setPodName] = useState('');
+    const [podName, setPodName] = useState(null);
 
     const startDate = calculateStartDateFor14DayPeriod(targetDate);
     const sprintPeriod = calculateSprintDates(targetDate)
@@ -85,6 +85,7 @@ const LiveDataView = () => {
         }
         else {
             setJqlQuery('')
+            setPodName(podKey)
             setError(`No resources list found for ${podKey} in ${getQuarterInfo} ${getTargetYear}`);
         }
 
@@ -99,7 +100,7 @@ const LiveDataView = () => {
     }, []);
 
     useEffect(() => {
-        generateJQL('MoneyMatrix')
+        generateJQL(podName || 'MoneyMatrix')
 
     }, [targetDate]);
     
@@ -132,6 +133,7 @@ const LiveDataView = () => {
 
     return (
         <>
+        <h2 style={{ color: 'green',margin:0 }}>{podName}</h2>
             <div className={"info-container"}>
                 <div>
                     <textarea

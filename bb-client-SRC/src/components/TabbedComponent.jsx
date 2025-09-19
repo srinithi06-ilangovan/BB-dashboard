@@ -9,7 +9,7 @@ import AISummaryGenerator from "./AgileReportGenerator";
 import { setAiReportData } from "../redux/aiReportSlice";
 import { useSelector, useDispatch } from "react-redux";
 import LiveDataView from "./LiveDataView";
-
+import reloadIcon from '../../public/Icons/reload.png';
 
 const TabbedComponent = ({ fileSelected }) => {
 
@@ -95,7 +95,7 @@ const userPrompt = `Consolidated and Summarise tickets summary in respective gro
                     className={activeTab === "AIReport" ? "tab active" : "tab"}>
                     <span onClick={() => setActiveTab("AIReport")}>AI Summary</span>
                     <span onClick={() => handleSend()} style={{ marginLeft: "10px",   verticalAlign: "sub" }}>
-                        <img height="20" width="20" src={"/public/Icons/reload.png"} />
+                        <img height="20" width="20" src={reloadIcon} />
                     </span>
                 </div>
                 

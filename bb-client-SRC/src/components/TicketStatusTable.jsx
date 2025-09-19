@@ -5,7 +5,10 @@ import TicketStatusPieChart from "./TicketStatusPieChart";
 import ScreenshotComponent from "./ScreenshotComponent";
 //import story_icon from '../storyIcon.png';
 import html2canvas from 'html2canvas';
-
+import storyIcon from '../../public/Icons/storyIcon.png';
+import bugIcon from '../../public/Icons/bugIcon.png';
+import testIcon from '../../public/Icons/testIcon.png';
+import taskIcon from '../../public/Icons/taskIcon.png';
 //--
 
 
@@ -49,11 +52,11 @@ const TicketStatusTable = () => {
     //   });
     const getIcon = (issueType) => {
         const colorMap = {
-            Story: <img height="15" width="15"  src={"/public/Icons/storyIcon.png"} />,
+            Story: <img height="15" width="15"  src={storyIcon} />,
             // Epic: "blue",
-            Test: <img height="15" width="15"  src={"/public/Icons/testIcon.png"} />,
-            Bug: <img height="15" width="15"  src={"/public/Icons/bugIcon.png"} />,
-            Task: <img height="15" width="15"  src={"/public/Icons/taskIcon.png"} />,
+            Test: <img height="15" width="15"  src={testIcon} />,
+            Bug: <img height="15" width="15"  src={bugIcon} />,
+            Task: <img height="15" width="15"  src={taskIcon} />,
         };
         const color = colorMap[issueType] || "gray";
         return (
