@@ -76,6 +76,7 @@ async function getIssueStatusAtDate(jiraUrl, personalAccessToken, jqlQuery, targ
             "Dev To Do": { statusId: 2.1, groupId: 2, group: "Open", dodFlag: 0 },
             "Open": { statusId: 2.2, groupId: 2, group: "Open", dodFlag: 0 },
             "Todo": { statusId: 2.3, groupId: 2, group: "Open", dodFlag: 0 },
+            "To Do": { statusId: 2.3, groupId: 2, group: "Open", dodFlag: 0 },
             "Ready to Do": { statusId: 2.4, groupId: 2, group: "Open", dodFlag: 0 },
             "Ready for Analysis": { statusId: 2.5, groupId: 2, group: "Open", dodFlag: 0 },
             "Design In Progress": { statusId: 3.1, groupId: 3, group: "In Progress", dodFlag: 0 },
