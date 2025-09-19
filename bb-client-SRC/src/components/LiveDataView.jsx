@@ -9,7 +9,7 @@ import './Styles/livedataview.css'
 
 import { calculateSprintDates, calculateSprintEndDate, calculateStartDateFor14DayPeriod } from '../utils/dataCalculator';
 
-export const exportToExcel = (jsonData, startDate, targetDate, fileName = 'data', sheetName = 'sheet1') => {
+export const exportToExcel = (jsonData, startDate, targetDate, fileName , weekPeriod, targetYear) => {
     if (!jsonData || jsonData.length === 0) {
         console.warn("No data provided for Excel export.");
         return;
@@ -21,7 +21,7 @@ export const exportToExcel = (jsonData, startDate, targetDate, fileName = 'data'
 
     // 2. Create a new workbook and append the worksheet
     const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, `${fileName}_${targetDate}_sheet`);
+    XLSX.utils.book_append_sheet(wb, ws, `${targetYear}-${fileName}-${weekPeriod}`);
 
     // 3. Write the workbook to a buffer
     // { bookType: 'xlsx' } specifies the Excel format
@@ -30,7 +30,7 @@ export const exportToExcel = (jsonData, startDate, targetDate, fileName = 'data'
 
     // 4. Create a Blob from the buffer and save it
     const data = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8' });
-    saveAs(data, `${fileName}_${startDate} to ${targetDate}.xlsx`);
+    saveAs(data, `${fileName}-${weekPeriod}_${startDate} to ${targetDate}.xlsx`);
 };
 
 
@@ -99,18 +99,19 @@ const LiveDataView = () => {
     }, []);
 
     useEffect(() => {
-        generateJQL('moneymatrix')
+        generateJQL('MoneyMatrix')
 
     }, [targetDate]);
     
     const handleSubmit = async (e) => {
+        const getTargetYear = new Date(targetDate).getFullYear()
         e.preventDefault();
         setLoading(true);
         setError(null);
         setStatuses({});
 
         try {
-            const response = await axios.post('https://agile-kanban-dashboard.onrender.com/api/jira-status', {
+            const response = await axios.post('http://localhost:3001/api/jira-status', {
                 jqlQuery,
                 //`${sprintPeriod.sprintEnd}`
                 targetDate: sprEndDate,
@@ -120,7 +121,7 @@ const LiveDataView = () => {
             setStatuses(response.data);
             // console.log(response.data)
 
-            exportToExcel(response.data, sprStartDate, sprEndDate, podName)
+            exportToExcel(response.data, sprStartDate, sprEndDate, podName, sprintPeriod.getWeekPeriod,getTargetYear)
         } catch (err) {
             console.error('Error fetching Jira statuses:', err);
             setError(err.response?.data?.error || 'An unexpected error occurred.');
@@ -135,8 +136,8 @@ const LiveDataView = () => {
                 <div>
                     <textarea
                         id="jqlQuery"
-                        rows="5"
-                        cols="70"
+                        rows="15"
+                        cols="120"
                         value={jqlQuery}
                         onChange={(e) => setJqlQuery(e.target.value)}
                         style={{ padding: '8px', boxSizing: 'border-box', marginBottom: '15px' }}
@@ -168,11 +169,11 @@ const LiveDataView = () => {
                     )}
                 </div>
                 <div className='pod-container'>
-                    <button className='btn' onClick={() => { generateJQL('payments') }}>Payments</button>
-                    <button className='btn' onClick={() => { generateJQL('orion') }}>Orion</button>
-                    <button className='btn' onClick={() => generateJQL('moneymatrix')}>Money Matrix</button>
-                    <button className='btn' onClick={() => { generateJQL('digitalpenny') }}>Digital Penny</button>
-                    <button className='btn' onClick={() => { generateJQL('powerplay') }}>Power Play</button>
+                    <button className='btn' onClick={() => { generateJQL('Payments') }}>Payments</button>
+                    <button className='btn' onClick={() => { generateJQL('Orion') }}>Orion</button>
+                    <button className='btn' onClick={() => generateJQL('MoneyMatrix')}>Money Matrix</button>
+                    <button className='btn' onClick={() => { generateJQL('DigitalPenny') }}>Digital Penny</button>
+                    <button className='btn' onClick={() => { generateJQL('PowerPlay') }}>Power Play</button>
                 </div>
             </div>
 

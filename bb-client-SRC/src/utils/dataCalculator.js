@@ -41,8 +41,8 @@ export const calculateSprintDates = (date, sprintPeriodDays = 14) => {
     const diffTime = selectedDate.getTime() - referenceDate.getTime();
     console.log(selectedDate.getTime(),'selectedDate.getTime()',referenceDate.getTime(),'referenceDate.getTime()')
     const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-    console.log(diffDays,'diffDays')
-
+    console.log( diffDays,'diffDays')
+const getWeekPeriod = `W${Math.floor(diffDays/7)}-${Math.ceil(diffDays/7)}`
     // 3. Determine Sprint Index:
     // How many full sprint periods have passed since the reference date.
     const sprintIndex = Math.floor(diffDays / sprintPeriodDays);
@@ -63,7 +63,7 @@ export const calculateSprintDates = (date, sprintPeriodDays = 14) => {
     	const sprintStart = sprintStartDate.toISOString().split('T')[0];
 	const sprintEnd = sprintEndDate.toISOString().split('T')[0];
 
-    return { sprintStart, sprintEnd };
+    return { sprintStart, sprintEnd, getWeekPeriod };
 };
 
 
