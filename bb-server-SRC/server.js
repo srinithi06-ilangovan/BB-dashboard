@@ -150,7 +150,7 @@ app.post("/api/ai-report", async (req, res) => {
   if (!data || !prompt) return res.status(400).json({ error: "Missing data or prompt" });
   try {
     const completion = await ai.models.generateContent({
-      model: 'gemini-1.5-flash',
+      model: 'gemini-2.5-flash-lite',
       // model: 'gemini-2.0-flash-001',
       contents: [
         {

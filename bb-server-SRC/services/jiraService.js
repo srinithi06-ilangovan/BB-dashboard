@@ -54,10 +54,10 @@ async function getIssueStatusAtDate(jiraUrl, personalAccessToken, jqlQuery, targ
             "resolution", "priority", // Often Epic Link
             "customfield_10003", // Common Story Points field. VERIFY THIS ID FOR YOUR JIRA.
             "epic", // Jira's Epic field (for Next-gen projects usually, contains name)
-            "labels" // Include labels if CarryFwd/AdHoc are determined by labels
-            // Add other custom fields if needed, e.g., "customfield_XXXXX", "customfield_YYYYY"
+            "labels",
         ],
-        expand: ["changelog"]
+        "startAt": 0,
+        "maxResults": 500 // Adjust as needed; Jira's default is 50
     };
 
     try {
