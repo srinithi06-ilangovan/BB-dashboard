@@ -56,8 +56,9 @@ async function getIssueStatusAtDate(jiraUrl, personalAccessToken, jqlQuery, targ
             "epic", // Jira's Epic field (for Next-gen projects usually, contains name)
             "labels",
         ],
-        "startAt": 0,
-        "maxResults": 500 // Adjust as needed; Jira's default is 50
+        expand: ["changelog"],
+        startAt: 0,
+        maxResults: 500 // Adjust as needed; Jira's default is 50
     };
 
     try {
