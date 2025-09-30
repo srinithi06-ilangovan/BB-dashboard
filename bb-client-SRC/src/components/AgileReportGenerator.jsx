@@ -13,7 +13,7 @@ export const TextAreaPreview = ({ promptVal ,sendFlag}) => {
 	<h4 style={{color:'#0073e6'}}>
             {`Key Highlights -  ${sendFlag}`}
         </h4>
-        <div className="markdown-content" dangerouslySetInnerHTML={{ __html: renderedHTML }} />;
+        <div className="markdown-content" dangerouslySetInnerHTML={{ __html: renderedHTML }} />
     </>
 
 }

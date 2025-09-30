@@ -56,6 +56,7 @@ const BarChart = () => {
         <>
             <button style={{ color: "red" }} onClick={handleScreenshot}>Download</button>
             <div ref={barChartRef}>
+                <h3 style={{margin:"10px"}}>Progress Bar Chart</h3>
                 <table
                     //margin-left= auto
                     //margin-right= auto
