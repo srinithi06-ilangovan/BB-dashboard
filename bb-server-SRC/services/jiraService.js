@@ -47,7 +47,7 @@ async function getIssueStatusAtDate(jiraUrl, personalAccessToken, jqlQuery, targ
     }
 
     const searchUrl = `${jiraUrl}/rest/api/2/search`;
-    const searchPayload = {
+    const baseSearchPayload = {
         jql: jqlQuery,
         fields: [
             "summary", "status", "issuetype", "assignee", "updated", "created",
@@ -57,14 +57,36 @@ async function getIssueStatusAtDate(jiraUrl, personalAccessToken, jqlQuery, targ
             "labels",
         ],
         expand: ["changelog"],
-        startAt: 0,
-        maxResults: 500 // Adjust as needed; Jira's default is 50
+        maxResults: 100 // Fetch 100 per request for better performance
     };
 
     try {
-        const response = await axios.post(searchUrl, searchPayload, { headers });
-        const issues = response.data.issues || [];
-        console.log(`Found ${issues.length} issues.`);
+        // Fetch all issues with pagination
+        let allIssues = [];
+        let startAt = 0;
+        let totalIssues = 0;
+
+        do {
+            const searchPayload = {
+                ...baseSearchPayload,
+                startAt: startAt
+            };
+
+            console.log(`Fetching issues from ${startAt}...`);
+            const response = await axios.post(searchUrl, searchPayload, { headers });
+
+            const issues = response.data.issues || [];
+            totalIssues = response.data.total || 0;
+
+            allIssues = allIssues.concat(issues);
+            startAt += baseSearchPayload.maxResults;
+
+            console.log(`Fetched ${allIssues.length} of ${totalIssues} issues`);
+
+        } while (allIssues.length < totalIssues);
+
+        const issues = allIssues;
+        console.log(`Successfully fetched all ${issues.length} issues.`);
 
         const resultIssuesArray = [];
 

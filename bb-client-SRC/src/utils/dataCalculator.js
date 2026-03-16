@@ -74,6 +74,81 @@ export const calculateSprintDates = (date, sprintPeriodDays = 14) => {
 };
 
 
+// Calculate monthly dates - first and last day of the month
+export const calculateMonthlyDates = (date) => {
+    // Parse the date string to avoid timezone issues
+    const [year, month, day] = date.split('-').map(Number);
+
+    // First day of the month
+    const monthStart = new Date(year, month - 1, 1);
+
+    // Last day of the month (0th day of next month)
+    const monthEnd = new Date(year, month, 0);
+
+    // Format dates manually to avoid timezone conversion
+    const monthStartFormatted = `${year}-${String(month).padStart(2, '0')}-01`;
+    const monthEndFormatted = `${year}-${String(month).padStart(2, '0')}-${String(monthEnd.getDate()).padStart(2, '0')}`;
+
+    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+                        'July', 'August', 'September', 'October', 'November', 'December'];
+    const monthName = monthNames[month - 1];
+    const periodLabel = `${monthName} ${year}`;
+
+    return {
+        periodStart: monthStartFormatted,
+        periodEnd: monthEndFormatted,
+        periodLabel
+    };
+};
+
+// Calculate quarterly dates - first and last day of the quarter
+export const calculateQuarterlyDates = (date) => {
+    // Parse the date string to avoid timezone issues
+    const [year, month, day] = date.split('-').map(Number);
+
+    // Determine which quarter (1-4) based on month (1-12)
+    const quarter = Math.floor((month - 1) / 3) + 1;
+
+    // Calculate start month of quarter (1, 4, 7, or 10)
+    const startMonth = (quarter - 1) * 3 + 1;
+
+    // Calculate end month of quarter (3, 6, 9, or 12)
+    const endMonth = quarter * 3;
+
+    // Last day of the end month
+    const lastDayOfEndMonth = new Date(year, endMonth, 0).getDate();
+
+    // Format dates manually
+    const quarterStartFormatted = `${year}-${String(startMonth).padStart(2, '0')}-01`;
+    const quarterEndFormatted = `${year}-${String(endMonth).padStart(2, '0')}-${String(lastDayOfEndMonth).padStart(2, '0')}`;
+
+    const periodLabel = `Q${quarter} ${year}`;
+
+    return {
+        periodStart: quarterStartFormatted,
+        periodEnd: quarterEndFormatted,
+        periodLabel
+    };
+};
+
+// Calculate yearly dates - first and last day of the year
+export const calculateYearlyDates = (date) => {
+    // Parse the date string to avoid timezone issues
+    const [year] = date.split('-').map(Number);
+
+    // Format dates manually
+    const yearStartFormatted = `${year}-01-01`;
+    const yearEndFormatted = `${year}-12-31`;
+
+    const periodLabel = `FY ${year}`;
+
+    return {
+        periodStart: yearStartFormatted,
+        periodEnd: yearEndFormatted,
+        periodLabel
+    };
+};
+
 // export const getInitialSprintDates = (refStartDate, sprintPeriodDays) => {
 //     const today = new Date();
 //     today.setUTCHours(0, 0, 0, 0); // Normalize today's date to midnight UTC

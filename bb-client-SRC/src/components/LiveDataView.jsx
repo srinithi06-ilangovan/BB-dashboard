@@ -7,7 +7,7 @@ import { saveAs } from 'file-saver';
 import { pod as podResource } from '../utils/jqlHelper';
 import './Styles/livedataview.css'
 
-import { calculateSprintDates, calculateSprintEndDate, calculateStartDateFor14DayPeriod } from '../utils/dataCalculator';
+import { calculateSprintDates, calculateSprintEndDate, calculateStartDateFor14DayPeriod, calculateMonthlyDates, calculateQuarterlyDates, calculateYearlyDates } from '../utils/dataCalculator';
 
 export const exportToExcel = (jsonData, startDate, targetDate, fileName , weekPeriod, targetYear) => {
     if (!jsonData || jsonData.length === 0) {
@@ -62,10 +62,14 @@ const LiveDataView = () => {
     const sprStartDate = sprintPeriod.sprintStart;
     const sprEndDate = sprintPeriod.sprintEnd;
 
-    const dynamicDateJql = `AND ( ((updatedDate >=${sprintPeriod.sprintStart}) AND updatedDate <=${sprintPeriod.sprintEnd}) OR (issueFunction in commented ( "after ${sprintPeriod.sprintStart} before ${sprintPeriod.sprintEnd}")) ) ORDER BY status ASC`
+    // Helper function to generate date-based JQL
+    const generateDateJql = (startDate, endDate) => {
+        return `AND ( ((updatedDate >=${startDate}) AND updatedDate <=${endDate}) OR (issueFunction in commented ( "after ${startDate} before ${endDate}")) ) ORDER BY status ASC`;
+    };
 
+    const dynamicDateJql = generateDateJql(sprintPeriod.sprintStart, sprintPeriod.sprintEnd);
 
-    const generateJQL = (podKey) => {
+    const generateJQL = (podKey, customStartDate = null, customEndDate = null) => {
         const getQuarterInfo = getQuarter(targetDate)
         const getTargetYear = new Date(targetDate).getFullYear()
 
@@ -78,8 +82,12 @@ const LiveDataView = () => {
             });
             baseJQL += `\n)`;
 
-            // setJQL(baseJQL+);
-            setJqlQuery(baseJQL + dynamicDateJql)
+            // Use custom dates if provided, otherwise use sprint dates
+            const dateJql = (customStartDate && customEndDate)
+                ? generateDateJql(customStartDate, customEndDate)
+                : dynamicDateJql;
+
+            setJqlQuery(baseJQL + dateJql)
             setPodName(podKey)
             setError('')
         }
@@ -104,25 +112,74 @@ const LiveDataView = () => {
 
     }, [targetDate]);
     
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e, periodType = 'sprint') => {
         const getTargetYear = new Date(targetDate).getFullYear()
         e.preventDefault();
         setLoading(true);
         setError(null);
         setStatuses({});
 
+        // Calculate dates based on period type
+        let periodStart, periodEnd, periodLabel;
+
+        switch(periodType) {
+            case 'monthly':
+                const monthlyDates = calculateMonthlyDates(targetDate);
+                periodStart = monthlyDates.periodStart;
+                periodEnd = monthlyDates.periodEnd;
+                periodLabel = monthlyDates.periodLabel;
+                break;
+
+            case 'quarterly':
+                const quarterlyDates = calculateQuarterlyDates(targetDate);
+                periodStart = quarterlyDates.periodStart;
+                periodEnd = quarterlyDates.periodEnd;
+                periodLabel = quarterlyDates.periodLabel;
+                break;
+
+            case 'yearly':
+                const yearlyDates = calculateYearlyDates(targetDate);
+                periodStart = yearlyDates.periodStart;
+                periodEnd = yearlyDates.periodEnd;
+                periodLabel = yearlyDates.periodLabel;
+                break;
+
+            case 'sprint':
+            default:
+                periodStart = sprStartDate;
+                periodEnd = sprEndDate;
+                periodLabel = sprintPeriod.getWeekPeriod;
+                break;
+        }
+
+        // Regenerate JQL with period-specific dates
+        const getQuarterInfo = getQuarter(targetDate);
+        const userList = podResource[podName][`${getQuarterInfo}_${getTargetYear}`];
+
+        let updatedJqlQuery = jqlQuery;
+        if (userList) {
+            const userListSplit = userList.split(',').map(name => name.trim());
+            let baseJQL = `Project in (SCPA, PAYSYS, TMSPON) AND Type NOT in ("EPIC")\nAND ((assignee in (${userListSplit.join(', ')}))`;
+            userListSplit.forEach(name => {
+                baseJQL += `\nOR (issueFunction in commented("by ${name}") OR issuekey in updatedBy(${name}))`;
+            });
+            baseJQL += `\n)`;
+
+            // Generate date JQL with period-specific dates
+            const dateJql = generateDateJql(periodStart, periodEnd);
+            updatedJqlQuery = baseJQL + dateJql;
+        }
+
         try {
             const response = await axios.post('https://agile-kanban-dashboard.onrender.com/api/jira-status', {
-                jqlQuery,
-                //`${sprintPeriod.sprintEnd}`
-                targetDate: sprEndDate,
-                startDate: sprStartDate
+                jqlQuery: updatedJqlQuery,
+                targetDate: periodEnd,
+                startDate: periodStart
             });
 
             setStatuses(response.data);
-            // console.log(response.data)
 
-            exportToExcel(response.data, sprStartDate, sprEndDate, podName, sprintPeriod.getWeekPeriod,getTargetYear)
+            exportToExcel(response.data, periodStart, periodEnd, podName, periodLabel, getTargetYear)
         } catch (err) {
             console.error('Error fetching Jira statuses:', err);
             setError(err.response?.data?.error || 'An unexpected error occurred.');
@@ -147,7 +204,7 @@ const LiveDataView = () => {
                     <div className={"date-container"}>
                         <button onClick={() => {
                             setTargetDate(calculateSprintEndDate(sprintPeriod.sprintEnd, "prev"))
-                        }}> {'<< Prev Sprint End'}</button>
+                        }}> {'Prev Sprint End'}</button>
                         <input
                             type="date"
                             id="targetDate"
@@ -157,10 +214,22 @@ const LiveDataView = () => {
                         />
                         <button onClick={() => {
                             setTargetDate(calculateSprintEndDate(sprintPeriod.sprintEnd, "next"))
-                        }}>{'Next Sprint End >>'}</button>
+                        }}>{'Next Sprint End'}</button>
 
-                        <button onClick={handleSubmit} disabled={!targetDate || !jqlQuery || loading} style={{ backgroundColor: `${jqlQuery ? '#3498db' : '#e0e0e0'}` }}>
-                            {loading ? 'Fetching...' : 'Submit'}
+                        <button onClick={(e) => handleSubmit(e, 'sprint')} disabled={!targetDate || !jqlQuery || loading} style={{ backgroundColor: `${jqlQuery ? '#3498db' : '#e0e0e0'}` }}>
+                            {loading ? 'Fetching...' : 'Sprint Submit'}
+                        </button>
+
+                         <button onClick={(e) => handleSubmit(e, 'monthly')} disabled={!targetDate || !jqlQuery || loading} style={{ backgroundColor: `${jqlQuery ? '#27ae60' : '#e0e0e0'}` }}>
+                            {loading ? 'Fetching...' : 'Monthly Submit'}
+                        </button>
+
+                         <button onClick={(e) => handleSubmit(e, 'quarterly')} disabled={!targetDate || !jqlQuery || loading} style={{ backgroundColor: `${jqlQuery ? '#e67e22' : '#e0e0e0'}` }}>
+                            {loading ? 'Fetching...' : 'Quarterly Submit'}
+                        </button>
+
+                         <button onClick={(e) => handleSubmit(e, 'yearly')} disabled={!targetDate || !jqlQuery || loading} style={{ backgroundColor: `${jqlQuery ? '#9b59b6' : '#e0e0e0'}` }}>
+                            {loading ? 'Fetching...' : 'Yearly Submit'}
                         </button>
                     </div>
 
