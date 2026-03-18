@@ -144,6 +144,14 @@ const LiveDataView = () => {
                 periodLabel = yearlyDates.periodLabel;
                 break;
 
+            case 'consolidated':
+                // From Jan 1, 2025 to current date
+                periodStart = '2025-01-01';
+                const today = new Date();
+                periodEnd = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+                periodLabel = '2025-2026-Consolidated';
+                break;
+
             case 'sprint':
             default:
                 periodStart = sprStartDate;
@@ -156,6 +164,7 @@ const LiveDataView = () => {
         const getQuarterInfo = getQuarter(targetDate);
 
         // For yearly reports, consolidate users from all quarters of the year
+        // For consolidated reports, consolidate users from all quarters of 2025 and 2026
         let userList;
         if (periodType === 'yearly') {
             const allQuarters = ['Q1', 'Q2', 'Q3', 'Q4'];
@@ -167,6 +176,22 @@ const LiveDataView = () => {
                     const quarterUsers = podResource[podName][quarterKey].split(',').map(name => name.trim());
                     quarterUsers.forEach(user => allUsers.add(user));
                 }
+            });
+
+            userList = Array.from(allUsers).join(', ');
+        } else if (periodType === 'consolidated') {
+            const allQuarters = ['Q1', 'Q2', 'Q3', 'Q4'];
+            const allYears = [2025, 2026];
+            const allUsers = new Set();
+
+            allYears.forEach(year => {
+                allQuarters.forEach(quarter => {
+                    const quarterKey = `${quarter}_${year}`;
+                    if (podResource[podName] && podResource[podName][quarterKey]) {
+                        const quarterUsers = podResource[podName][quarterKey].split(',').map(name => name.trim());
+                        quarterUsers.forEach(user => allUsers.add(user));
+                    }
+                });
             });
 
             userList = Array.from(allUsers).join(', ');
@@ -248,6 +273,10 @@ const LiveDataView = () => {
 
                          <button onClick={(e) => handleSubmit(e, 'yearly')} disabled={!targetDate || !jqlQuery || loading} style={{ backgroundColor: `${jqlQuery ? '#9b59b6' : '#e0e0e0'}` }}>
                             {loading ? 'Fetching...' : 'Yearly Submit'}
+                        </button>
+
+                         <button onClick={(e) => handleSubmit(e, 'consolidated')} disabled={!targetDate || !jqlQuery || loading} style={{ backgroundColor: `${jqlQuery ? '#c0392b' : '#e0e0e0'}` }}>
+                            {loading ? 'Fetching...' : 'Consolidated 2025-2026'}
                         </button>
                     </div>
 
