@@ -154,7 +154,25 @@ const LiveDataView = () => {
 
         // Regenerate JQL with period-specific dates
         const getQuarterInfo = getQuarter(targetDate);
-        const userList = podResource[podName][`${getQuarterInfo}_${getTargetYear}`];
+
+        // For yearly reports, consolidate users from all quarters of the year
+        let userList;
+        if (periodType === 'yearly') {
+            const allQuarters = ['Q1', 'Q2', 'Q3', 'Q4'];
+            const allUsers = new Set();
+
+            allQuarters.forEach(quarter => {
+                const quarterKey = `${quarter}_${getTargetYear}`;
+                if (podResource[podName][quarterKey]) {
+                    const quarterUsers = podResource[podName][quarterKey].split(',').map(name => name.trim());
+                    quarterUsers.forEach(user => allUsers.add(user));
+                }
+            });
+
+            userList = Array.from(allUsers).join(', ');
+        } else {
+            userList = podResource[podName][`${getQuarterInfo}_${getTargetYear}`];
+        }
 
         let updatedJqlQuery = jqlQuery;
         if (userList) {
