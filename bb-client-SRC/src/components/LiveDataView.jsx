@@ -21,7 +21,7 @@ export const exportToExcel = (jsonData, startDate, targetDate, fileName , weekPe
 
     // 2. Create a new workbook and append the worksheet
     const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, `${targetYear}-${fileName}-${weekPeriod}`);
+    XLSX.utils.book_append_sheet(wb, ws, `Consolidated_2025_to_2026`);
 
     // 3. Write the workbook to a buffer
     // { bookType: 'xlsx' } specifies the Excel format
@@ -31,7 +31,7 @@ export const exportToExcel = (jsonData, startDate, targetDate, fileName , weekPe
     // 4. Create a Blob from the buffer and save it
     const data = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8' });
     
-    saveAs(data, `Consolidated_2025_to_2926.xlsx`);
+    saveAs(data, `Consolidated_2025_to_2026.xlsx`);
 };
 
 
@@ -215,7 +215,7 @@ const LiveDataView = () => {
         }
 
         try {
-            const response = await axios.post('https://agile-kanban-dashboard.onrender.com/api/jira-status', {
+            const response = await axios.post('http://localhost:3001/api/jira-status', {
                 jqlQuery: updatedJqlQuery,
                 targetDate: periodEnd,
                 startDate: periodStart
