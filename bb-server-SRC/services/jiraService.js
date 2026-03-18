@@ -1,5 +1,6 @@
 // services/jiraService.js
 import axios from 'axios';
+import { calculateStatusDurationsAtDate, formatDuration } from '../utils/estimation.js';
 
 /**
  * Fetches the status of Jira issues on a specific target date and returns
@@ -134,6 +135,13 @@ async function getIssueStatusAtDate(jiraUrl, personalAccessToken, jqlQuery, targ
 
         for (const issue of issues) {
             const issueKey = issue.key;
+            const timeInStatusMap = calculateStatusDurationsAtDate(issue);
+            const formattedDurations = {};
+            Object.entries(timeInStatusMap).forEach(([status, ms]) => {
+                formattedDurations[`TimeIn_${status}`] = formatDuration(ms);
+                // Also adding raw seconds for easier sorting/math in UI
+                formattedDurations[`SecondsIn_${status}`] = Math.floor(ms / 1000);
+            });
             const changelog = issue.changelog?.histories || [];
             const statusChanges = [];
 
@@ -223,7 +231,10 @@ async function getIssueStatusAtDate(jiraUrl, personalAccessToken, jqlQuery, targ
 			const currentDate = new Date(createdDate);
 
 			const adHocValue = (currentDate >= startDate && currentDate <= endDate)? "AdHoc" : "No";
-
+            const timepieceColumns = {};
+            Object.entries(timeInStatusMap).forEach(([statusName, ms]) => {
+                timepieceColumns[`TimeIn_${statusName}`] = formatDuration(ms);
+            });
 			
             // Construct the desired object for this issue with all mapped fields
             const formattedIssue = {
@@ -243,7 +254,12 @@ async function getIssueStatusAtDate(jiraUrl, personalAccessToken, jqlQuery, targ
                 "Group": mappedStatus.group,
                 "CarryFwd": carryFwdValue,
                 "AdHoc": adHocValue,
-                "DoD": mappedStatus.dodFlag
+                "DoD": mappedStatus.dodFlag,
+                "TotalTimeSpent": formatDuration(Object.values(timeInStatusMap).reduce((a, b) => a + b, 0)),
+                ...timepieceColumns
+                // If you want specific columns for 'In Progress' and 'Open':
+                // "Time_In_Progress": formatDuration(timeInStatusMap["In Progress"] || 0),
+                // "Time_Open": formatDuration(timeInStatusMap["Open"] || 0)
             };
 
             resultIssuesArray.push(formattedIssue);
