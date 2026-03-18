@@ -30,7 +30,8 @@ export const exportToExcel = (jsonData, startDate, targetDate, fileName , weekPe
 
     // 4. Create a Blob from the buffer and save it
     const data = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8' });
-    saveAs(data, `${fileName}-${weekPeriod}_${startDate} to ${targetDate}.xlsx`);
+    
+    saveAs(data, `Consolidated_2025_to_2926.xlsx`);
 };
 
 
