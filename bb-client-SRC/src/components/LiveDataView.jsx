@@ -21,7 +21,34 @@ export const exportToExcel = (jsonData, startDate, targetDate, fileName , weekPe
 
     // 2. Create a new workbook and append the worksheet
     const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, `Consolidated_2025_to_2026`);
+    // Excel sheet names must be 31 characters or less
+    let sheetName;
+
+    if (weekPeriod === '2025-2026') {
+        // Consolidated: MoneyMatrix-2025-2026
+        sheetName = `${fileName}-${weekPeriod}`;
+    } else if (weekPeriod === `FY ${targetYear}`) {
+        // Yearly: MoneyMatrix-2026
+        sheetName = `${fileName}-${targetYear}`;
+    } else if (weekPeriod.match(/^(January|February|March|April|May|June|July|August|September|October|November|December) \d{4}$/)) {
+        // Monthly: MoneyMatrix-Jan-2026
+        const monthAbbrev = weekPeriod.split(' ')[0].substring(0, 3);
+        const year = weekPeriod.split(' ')[1];
+        sheetName = `${fileName}-${monthAbbrev}-${year}`;
+    } else if (weekPeriod.match(/^Q[1-4] \d{4}$/)) {
+        // Quarterly: MoneyMatrix-Q1-2026
+        const quarter = weekPeriod.split(' ')[0];
+        const year = weekPeriod.split(' ')[1];
+        sheetName = `${fileName}-${quarter}-${year}`;
+    } else {
+        // Sprint: MoneyMatrix-2026-W1-2
+        sheetName = `${fileName}-${targetYear}-${weekPeriod}`;
+    }
+
+    if (sheetName.length > 31) {
+        sheetName = sheetName.substring(0, 31);
+    }
+    XLSX.utils.book_append_sheet(wb, ws, sheetName);
 
     // 3. Write the workbook to a buffer
     // { bookType: 'xlsx' } specifies the Excel format
@@ -30,8 +57,27 @@ export const exportToExcel = (jsonData, startDate, targetDate, fileName , weekPe
 
     // 4. Create a Blob from the buffer and save it
     const data = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8' });
-    
-    saveAs(data, `Consolidated_2025_to_2026.xlsx`);
+
+    // Format filename based on report type
+    let downloadFileName;
+    if (weekPeriod === '2025-2026') {
+        // Consolidated: MoneyMatrix-2025-2026.xlsx
+        downloadFileName = `${fileName}-${weekPeriod}.xlsx`;
+    } else if (weekPeriod === targetYear.toString()) {
+        // Yearly: MoneyMatrix-2026.xlsx
+        downloadFileName = `${fileName}-${targetYear}.xlsx`;
+    } else if (weekPeriod.match(/^(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)/)) {
+        // Monthly: MoneyMatrix-Jan_2026.xlsx
+        downloadFileName = `${fileName}-${weekPeriod}.xlsx`;
+    } else if (weekPeriod.match(/^Q[1-4]/)) {
+        // Quarterly: MoneyMatrix-Q1_2026.xlsx
+        downloadFileName = `${fileName}-${weekPeriod}.xlsx`;
+    } else {
+        // Sprint: MoneyMatrix-Sprint1-2026-01-01-to-2026-01-14.xlsx
+        downloadFileName = `${fileName}-${weekPeriod}-${startDate}-to-${targetDate}.xlsx`;
+    }
+
+    saveAs(data, downloadFileName);
 };
 
 
@@ -150,7 +196,7 @@ const LiveDataView = () => {
                 periodStart = '2025-01-01';
                 const today = new Date();
                 periodEnd = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-                periodLabel = '2025-2026-Consolidated';
+                periodLabel = '2025-2026';
                 break;
 
             case 'sprint':
