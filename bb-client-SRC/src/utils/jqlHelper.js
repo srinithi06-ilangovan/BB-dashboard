@@ -11,7 +11,7 @@ export const pod = {
         Q1_2026: 'e.subbiah, Anushree.Chandrasek, Soujanya.Shetty, sravanthi.vettigunta, praveer.nair, srinithi.ilangovan, ahana.mukherjee, harini.bhamidipati, murali.krishna, dilip.mudduluru',
         Q2_2026: 'e.subbiah, Anushree.Chandrasek, Soujanya.Shetty, sravanthi.vettigunta, praveer.nair, srinithi.ilangovan, ahana.mukherjee, harini.bhamidipati, murali.krishna, dilip.mudduluru',
         Q3_2026: 'e.subbiah, Anushree.Chandrasek, Soujanya.Shetty, sravanthi.vettigunta, praveer.nair, srinithi.ilangovan, ahana.mukherjee, harini.bhamidipati, murali.krishna, dilip.mudduluru',
-        Q4_2026: 'e.subbiah, Anushree.Chandrasek, Soujanya.Shetty, sravanthi.vettigunta, praveer.nair, srinithi.ilangovan, ahana.mukherjee, harini.bhamidipati, murali.krishna, dilip.mudduluru'
+        Q4_2026: 'e.subbiah, Anushree.Chandrasek, Soujanya.Shetty, sravanthi.vettigunta, praveer.nair, srinithi.ilangovan, ahana.mukherjee, aravind.rajendran, harini.bhamidipati, murali.krishna, dilip.mudduluru'
     },
     Orion: {
         Q1_2025: 'saranraj.balu, r.nagaimuthu, kanishka.das, Dhwanit.Kumar, shivam.patwal, swetha.busam, chirag.chhabria, karthik.gunti, vivekprabhakaran.j',
@@ -20,8 +20,8 @@ export const pod = {
         Q4_2025: 'saranraj.balu, sathish.kumarmohan, namrata.chakraborty, shilpa.kanojiya, swetha.busam, karthik.gunti, vivekprabhakaran.j, N.Weldegiorgis, aravind.rajendran',
         Q1_2026: 'saranraj.balu, sathish.kumarmohan, namrata.chakraborty, shilpa.kanojiya, swetha.busam, karthik.gunti, N.Weldegiorgis, aravind.rajendran',
         Q2_2026: 'saranraj.balu, sathish.kumarmohan, namrata.chakraborty, saurabh.tiwari, swetha.busam, karthik.gunti, N.Weldegiorgis, aravind.rajendran',
-        Q3_2026: 'saranraj.balu, sathish.kumarmohan, namrata.chakraborty, saurabh.tiwari, swetha.busam, karthik.gunti, N.Weldegiorgis, aravind.rajendran, sumitha.kumari,',
-        Q4_2026: 'saranraj.balu, sathish.kumarmohan, namrata.chakraborty, saurabh.tiwari, karthik.gunti, N.Weldegiorgis, aravind.rajendran, sumitha.kumari,'
+        Q3_2026: 'saranraj.balu, sathish.kumarmohan, namrata.chakraborty, saurabh.tiwari, swetha.busam, karthik.gunti, N.Weldegiorgis, aravind.rajendran, sumitha.kumari',
+        Q4_2026: 'saranraj.balu, sathish.kumarmohan, namrata.chakraborty, saurabh.tiwari, karthik.gunti, N.Weldegiorgis, sumitha.kumari'
     },
     DigitalPenny: {
         Q1_2025: 'v.avva, deepa.lingeswari, priya.tripathi, tanmy.rastogi, m.muramshetty, Mugilan.ka, rahul.tomar, Rocky.Sinha',
