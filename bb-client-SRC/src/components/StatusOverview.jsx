@@ -194,7 +194,7 @@ const StatusOverview = () => {
                                 style={{ ...cellStyle,  width: "12%", backgroundColor: "lightgrey", border: ".25px solid black" }}
                             >
                                 Pending to Complete
-								<div style={{fontSize: "3px"}}>(Total - DoD)</div>
+								<div style={{fontSize: "7px"}}>(Total - DoD)</div>
                             </th>
                          
                         </tr>
